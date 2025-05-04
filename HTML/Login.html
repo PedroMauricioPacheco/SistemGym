@@ -47,16 +47,16 @@
     <main>
         <div class="about-area">
             <div class="container">
-              <div class="row">
+              <div class="row gx-5">
                 <div class="col-12">
                   <h4 class="main-tittle">Faça login ou cadastre-se</h4>
                 </div>
                 <div class="col-md-6 formLogin d-flex flex-column align-items-center">
                     <form action="../Controllers/LoginController.php" method="post">
                         <h4 class="main-tittle">Login</h4>
-                        <p>Usuário</p>
+                        <h6>Usuário</h6>
                         <input type="text" name="usuario">
-                        <p>Senha</p>
+                        <h6>Senha</h6>
                         <input type="password" name="senha">
                         <input type="hidden">
                         <button class="btn btn-info d-flex" type="submit">Login</button>
@@ -65,11 +65,11 @@
                 <div class="col-md-6 formRegister d-flex flex-column align-items-center">
                     <h4 class="main-tittle">Cadastro</h4>
                     <form action="../Controllers/LoginController.php" method="post">
-                        <p>Username</p>
+                        <h6>Usuário</h6>
                         <input type="text">
-                        <p>E-mail</p>
+                        <h6>Email</h6>
                         <input type="text">
-                        <p>Senha</p>
+                        <h6>Senha</h6>
                         <input type="password">
                         <input type="hidden">
                         <button class="btn btn-info d-flex" type="submit">Registrar</button>

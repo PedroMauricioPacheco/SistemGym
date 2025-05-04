@@ -7,6 +7,7 @@ body{
 header{
     text-align: center;
 }
+/* Página Inpicial */
 .carousel-item img {
     max-height: 450px;
     object-fit: cover;
@@ -34,7 +35,7 @@ header{
     border: 1px solid rgb(201, 195, 195);
     text-decoration: none;
 }
-/* Sobre o Sistema */
+/*Padrões */
 .main-tittle{
     color: #444;
     margin: 25px 0 25px 0;
@@ -46,6 +47,12 @@ header{
     color: #444;
     text-transform: uppercase;
 }
+span{
+    font-size: 13px;
+    color: red;
+    text-transform: uppercase;
+}
+/* Sobre o Sistema */
 .about-list{
   list-style: none;
   padding-left: 0;
@@ -68,3 +75,11 @@ header{
 .formRegister input{
     margin: 0 0 15px 0;
 }
+.formLogin, .formRegister {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+
