@@ -24,3 +24,10 @@ CREATE TABLE Treinos
     data_alteracao DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_aluno) REFERENCES Alunos (id_aluno)
 )
+CREATE TABLE usuarios
+(
+    id_usuario INT auto_increment PRIMARY KEY,
+    usuario VARCHAR(35),
+    senha VARCHAR(20),
+    email VARCHAR(35),
+)
