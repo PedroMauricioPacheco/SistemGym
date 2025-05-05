@@ -2,6 +2,15 @@
     include __DIR__ . '/../Model/LoginModel.php';
 
     $action = $_POST['action'] ?? '';
+
+    switch($action){
+        case 'login':
+            Login($action);
+            break;
+        case 'cadastro':
+            Cadastro($action);
+            break;
+    }
     
     function Login($action){
         if($action=='login'){
@@ -11,37 +20,43 @@
     }
     function Cadastro($action){
         if($action=='cadastro'){
-            $usuario = $_POST['isuario']?? '';
+            $usuario = $_POST['usuario']?? '';
             $email = $_POST['email']?? '';
             $senha = $_POST['senha']?? '';
+            global $pdo, $checarRepetido, $inserirClienteBanco;
+            inserirCliente($action, $usuario, $email, $senha, $pdo, $checarRepetido, $inserirClienteBanco);
         }
     }
-    function inserirCliente($action,$usuario, $email, $senha, $pdo, $checarRepetido, $inserirCliente){
-        if ($action =='cadastrar'){
-            if (CampoVazio($usuario, $senha, $email)){
-                echo "<span> Preenche todos os campos </span>";
+    function inserirCliente($action,$usuario, $email, $senha, $pdo, $checarRepetido, $inserirClienteBanco){
+        if ($action =='cadastro'){
+            if (camposVazios($usuario, $email, $senha)) {
+                echo "Preencha todos os campos";
                 return;
             }
             $stmt = $pdo ->prepare($checarRepetido);
             $stmt -> execute([$usuario]);
             $checouRepetido = $stmt ->fetchColumn();
 
-            if($checouRepetido >0){
+            if($checouRepetido > 0){
                 echo "<span> Usuário já cadastrado </span>";
+                return;
             };
         }
             else{
-                $inserirCliente;
-                $stmt = $pdo ->prepare ($inserirCliente);
+                $inserirClienteBanco;
+                $stmt = $pdo ->prepare ($inserirClienteBanco);
                 $stmt -> execute([$usuario, $senha]);
+                echo "<span> Usuário cadastrado com sucesso</span>";
+                header("Location: ..Login.html");
             }
         }
-    function CampoVazio(...$campos){
-        foreach($campos as $campo){
-            if(trim($campo)==''){
-                return true;
+        function camposVazios(...$campos) {
+            foreach ($campos as $campo) {
+                if (trim($campo) === '') {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
-    }
+        
 ?>
