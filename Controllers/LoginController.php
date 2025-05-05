@@ -42,13 +42,11 @@
                 return;
             };
         }
-            else{
-                $inserirClienteBanco;
-                $stmt = $pdo ->prepare ($inserirClienteBanco);
-                $stmt -> execute([$usuario, $senha]);
-                echo "<span> Usuário cadastrado com sucesso</span>";
-                header("Location: ..Login.html");
-            }
+            $stmt = $pdo ->prepare ($inserirClienteBanco);
+            $stmt -> execute([$usuario, $senha]);
+            echo "<span> Usuário cadastrado com sucesso</span>";
+            header("Location: ../HTML/Login.html");
+            
         }
         function camposVazios(...$campos) {
             foreach ($campos as $campo) {

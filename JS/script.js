@@ -22,6 +22,7 @@ function validarCadastro(event){
         msgErro.textContent = "";
     }
 }
+
 function iniciarEventosCadastro(){
     document.getElementById('formCadastro').addEventListener('submit',validarCadastro)
 }
