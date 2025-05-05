@@ -7,4 +7,5 @@
 
     $inserirClienteBanco = "INSERT INTO usuarios (usuario, senha) VALUES (?,?)";
     $checarRepetido = "SELECT COUNT(*) FROM usuarios WHERE usuario = ?";
+    $checarLogin = "SELECT * FROM usuarios WHERE usuario = ? AND senha = ?";
 ?>

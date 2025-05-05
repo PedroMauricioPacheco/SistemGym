@@ -27,4 +27,6 @@ function iniciarEventosCadastro(){
     document.getElementById('formCadastro').addEventListener('submit',validarCadastro)
 }
 
-window.addEventListener("DOMContentLoaded",iniciarEventosCadastro);
+window.addEventListener("DOMContentLoaded",()=> {
+    iniciarEventosCadastro();
+});
