@@ -14,20 +14,17 @@
     
     function Login($action){
         global $checarLogin;
-        if($action=='login'){
             $usuario = $_POST['usuario']?? '';
             $senha = $_POST['senha']?? '';
             validarLogin($usuario, $senha, $checarLogin);
-        }
     }
     function Cadastro($action){
-        if($action=='cadastro'){
             $usuario = $_POST['usuario']?? '';
             $email = $_POST['email']?? '';
             $senha = $_POST['senha']?? '';
             global $pdo, $checarRepetido, $inserirClienteBanco;
             inserirCliente($action, $usuario, $email, $senha, $pdo, $checarRepetido, $inserirClienteBanco);
-        }
+        
     }
     function inserirCliente($action,$usuario, $email, $senha, $pdo, $checarRepetido, $inserirClienteBanco){
         if ($action =='cadastro'){

@@ -1,32 +1,47 @@
-function pegarValores() {
-    return{
-        usuario: document.getElementById ('usuario').value.trim(),
-        email: document.getElementById ('email').value.trim(),
-        senha: document.getElementById ('senha').value.trim(),
-        msgErro: document.getElementById('msgErro'),
-    }
-    
+function pegarValores(form) {
+    return {
+        usuario: form.querySelector('[name="usuario"]')?.value.trim(),
+        email: form.querySelector('[name="email"]')?.value.trim(),
+        senha: form.querySelector('[name="senha"]')?.value.trim(),
+        msgErro: form.querySelector('.msgErro'),
+    };
 }
-function validarCadastro(event){
-    const {usuario,email,senha, msgErro} = pegarValores();
 
-    if(!usuario || !email || !senha){
+function validarLogin(event) {
+    const form = event.target;
+    const { usuario, senha, msgErro } = pegarValores(form);
+
+    if (!usuario || !senha) {
         event.preventDefault();
-        msgErro.textContent = "Preencha todos os campos";
-        msgErro.classList.add("mostrar");
-
-        setTimeout(() => {
-            msgErro.textContent = "";
-        }, 3000);
-    }else{
-        msgErro.textContent = "";
+        if (msgErro) {
+            msgErro.textContent = "Preencha todos os campos";
+            msgErro.classList.add("mostrar");
+            setTimeout(() => msgErro.textContent = "", 3000);
+        }
+    } else {
+        if (msgErro) msgErro.textContent = "";
     }
 }
 
-function iniciarEventosCadastro(){
-    document.getElementById('formCadastro').addEventListener('submit',validarCadastro)
+function validarCadastro(event) {
+    const form = event.target;
+    const { usuario, email, senha, msgErro } = pegarValores(form);
+
+    if (!usuario || !email || !senha) {
+        event.preventDefault();
+        if (msgErro) {
+            msgErro.textContent = "Preencha todos os campos";
+            msgErro.classList.add("mostrar");
+            setTimeout(() => msgErro.textContent = "", 3000);
+        }
+    } else {
+        if (msgErro) msgErro.textContent = "";
+    }
 }
 
-window.addEventListener("DOMContentLoaded",()=> {
-    iniciarEventosCadastro();
-});
+function iniciarEventos() {
+    document.getElementById('formLogin')?.addEventListener('submit', validarLogin);
+    document.getElementById('formCadastro')?.addEventListener('submit', validarCadastro);
+}
+
+window.addEventListener("DOMContentLoaded", iniciarEventos);
