@@ -28,8 +28,8 @@ function VericaCadastro(event){
 }
 
 function iniciarEventos() {
-    document.getElementById('formLogin')?.addEventListener('submit', validarLogin);
-    document.getElementById('formCadastro')?.addEventListener('submit', validarCadastro);
+    document.getElementById('formLogin')?.addEventListener('submit', VerificaLogin);
+    document.getElementById('formCadastro')?.addEventListener('submit', VericaCadastro);
 }
 
 window.addEventListener("DOMContentLoaded", iniciarEventos)

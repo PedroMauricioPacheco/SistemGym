@@ -1,52 +1,43 @@
 <?php
     include __DIR__ . '/../Model/LoginModel.php';
-
+    
     $action = $_POST['action'] ?? '';
 
     switch($action){
         case 'login':
-            Login($action);
+            login($action);
             break;
         case 'cadastro':
-            Cadastro($action);
+            cadastro($action);
             break;
     }
     
-    function Login($action){
+    function login($action){
         global $checarLogin;
             $usuario = $_POST['usuario']?? '';
             $senha = $_POST['senha']?? '';
             validarLogin($usuario, $senha, $checarLogin);
     }
-    function Cadastro($action){
+    function cadastro($action){
             $usuario = $_POST['usuario']?? '';
             $email = $_POST['email']?? '';
             $senha = $_POST['senha']?? '';
-            global $pdo, $checarRepetido, $inserirClienteBanco;
-            inserirCliente($action, $usuario, $email, $senha, $pdo, $checarRepetido, $inserirClienteBanco);
+            global $pdo, $checarRepetido, $inserirUsuario;
+            
+            if(!usuarioRepetido($pdo,$checarRepetido,$usuario)){
+                cadastrandoUsuario($pdo,$inserirUsuario,$usuario,$email,$senha);
+            }
         
     }
-    function inserirCliente($action,$usuario, $email, $senha, $pdo, $checarRepetido, $inserirClienteBanco){
-        if ($action =='cadastro'){
-            if (camposVazios($usuario, $email, $senha)) {
-                echo "Preencha todos os campos";
-                return;
-            }
-            $stmt = $pdo ->prepare($checarRepetido);
-            $stmt -> execute([$usuario]);
-            $checouRepetido = $stmt ->fetchColumn();
-
-            if($checouRepetido > 0){
-                header("Location: ../HTML/Login.html?");
-                exit;
-            };
-        }
-            $stmt = $pdo ->prepare ($inserirClienteBanco);
-            $stmt -> execute([$usuario, $senha]);
-            header("Location: ../HTML/Login.html");
-            echo "<span> Usuário cadastrado com sucesso</span>";
-            
-        }
+    function usuarioRepetido($pdo,$checarRepetido,$usuario){
+        $stmt = $pdo ->prepare($checarRepetido);
+        $stmt -> execute([$usuario]);
+        return $stmt ->fetchColumn() > 0;
+    }
+    function cadastrandoUsuario($pdo,$inserirUsuario,$usuario,$email,$senha){
+        $stmt = $pdo->prepare($inserirUsuario);
+        $stmt->execute([$usuario, $email, $senha]);
+    }        
         function validarLogin($usuario,$senha,$checarLogin){
             global $pdo;
             $stmt = $pdo -> prepare($checarLogin);
@@ -60,15 +51,4 @@
                 exit;
             }
         }
-
-
-        function camposVazios(...$campos) {
-            foreach ($campos as $campo) {
-                if (trim($campo) === '') {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
 ?>

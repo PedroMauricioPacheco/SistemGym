@@ -5,7 +5,7 @@
         echo 'error'. $e->getMessage();
     }
 
-    $inserirClienteBanco = "INSERT INTO usuarios (usuario, senha) VALUES (?,?)";
+    $inserirUsuario = "INSERT INTO usuarios (usuario, email, senha) VALUES (?,?,?)";
     $checarRepetido = "SELECT COUNT(*) FROM usuarios WHERE usuario = ?";
     $checarLogin = "SELECT * FROM usuarios WHERE usuario = ? AND senha = ?";
 ?>

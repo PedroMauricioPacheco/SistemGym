@@ -18,8 +18,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!--FontAwesome-->
     <script src="https://kit.fontawesome.com/17c127de13.js" crossorigin="anonymous"></script>
-    <!--Progress Bar-->
-    <script src="/JS/progressbar.min.js"></script>
     <!--Parallax-->
     <script src="https://cdn.jsdelivr.net/parallax.js/1.4.2/parallax.min.js"></script>
 </head>
@@ -54,8 +52,8 @@
                         <input type="text" name="usuario" id="usuarioLogin">
                         <h6>Senha</h6>
                         <input type="password" name="senha" id="senhaLogin">
-                        <input type="hidden">
-                        <button class="btn btn-info d-flex" type="submit" value="login">Login</button>
+                        <input type="hidden" name="action" value="login">
+                        <button class="btn btn-info d-flex" type="submit">Login</button>
                         <span class="msgErroLogin"></span>
                     </form>
                     <div class="fazerCadastrado d-flex flex-column align-items-center mt-4">
@@ -73,7 +71,7 @@
                                 <div class="modal-body">
                                     <div class="container d-flex flex-column align-items-center">
                                       <div class="formCadastro d-flex flex-column align-items-center justify-content-center">
-                                          <form class="d-flex flex-column" onsubmit="VericaCadastro(event)" id="formCadastro" action="../Controllers/LoginController.php" method="post ">
+                                          <form class="d-flex flex-column" id="formCadastro" action="../Controllers/LoginController.php" method="post">
                                                 <h4 class="main-tittle">Login</h4>
                                                 <h6>Usuário</h6>
                                                 <input type="text" name="usuario" id="usuarioCadastro">
@@ -81,8 +79,8 @@
                                                 <input type="text" name="email" id="emailCadastro">
                                                 <h6>Senha</h6>
                                                 <input type="password" name="senha" id="senhaCadastro">
-                                                <input type="hidden">
-                                                <button class="btn btn-info " type="submit" value="cadastro" name="cadastro">Finalizar cadastro</button>
+                                                <input type="hidden" name="action" value="cadastro">
+                                                <button class="btn btn-info " type="submit" >Finalizar cadastro</button>
                                                 <span id="msgErroCadastro"></span>
                                             </form>
                                 </div>
@@ -92,11 +90,9 @@
                               </div>
                             </div>
                           </div>
-                    
                     </div>
               </div>
             </div>
           </div>
-
         </div>
     </main>
