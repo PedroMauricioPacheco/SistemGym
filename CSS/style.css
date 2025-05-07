@@ -4,9 +4,13 @@ body{
     background-color: #f9f9f9;
     color: #444;
 }
+/* Header */
 header{
     text-align: center;
 }
+.nav-item.nav-link:hover {
+    color: rgb(0, 204, 255);
+  }
 /* Página Inpicial */
 .carousel-item img {
     max-height: 450px;
