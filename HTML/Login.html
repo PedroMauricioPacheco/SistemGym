@@ -48,7 +48,7 @@
             <div class="container d-flex flex-column align-items-center">
                   <h4 class="main-tittle">Faça login ou cadastre-se</h4>
                 <div class=" formLogin d-flex flex-column align-items-center justify-content-center">
-                    <form id="formLogin" action="../Controllers/LoginController.php" method="post">
+                    <form id="formLogin" onsubmit="VerificaLogin(event)" action="../Controllers/LoginController.php" method="post">
                         <h4 class="main-tittle">Login</h4>
                         <h6>Usuário</h6>
                         <input type="text" name="usuario" id="usuarioLogin">
@@ -56,9 +56,9 @@
                         <input type="password" name="senha" id="senhaLogin">
                         <input type="hidden">
                         <button class="btn btn-info d-flex" type="submit" value="login">Login</button>
-                        <span class="msgErro"></span>
+                        <span class="msgErroLogin"></span>
                     </form>
-                    <div class="fazerCadastrado flex-column align-items-center mt-4">
+                    <div class="fazerCadastrado d-flex flex-column align-items-center mt-4">
                         <h6>Não é cadastrado?</h6>   
                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                             Realizar cadastro
@@ -73,7 +73,7 @@
                                 <div class="modal-body">
                                     <div class="container d-flex flex-column align-items-center">
                                       <div class="formCadastro d-flex flex-column align-items-center justify-content-center">
-                                          <form id="formCadastro" action="../Controllers/LoginController.php" method="post">
+                                          <form class="d-flex flex-column" onsubmit="VericaCadastro(event)" id="formCadastro" action="../Controllers/LoginController.php" method="post ">
                                                 <h4 class="main-tittle">Login</h4>
                                                 <h6>Usuário</h6>
                                                 <input type="text" name="usuario" id="usuarioCadastro">
@@ -82,8 +82,8 @@
                                                 <h6>Senha</h6>
                                                 <input type="password" name="senha" id="senhaCadastro">
                                                 <input type="hidden">
-                                                <button class="btn btn-info d-flex justify-content-center" style="width: 100%;" type="submit" value="cadastro" name="cadastro">Finalizar cadastro</button>
-                                                <span class="msgErro"></span>
+                                                <button class="btn btn-info " type="submit" value="cadastro" name="cadastro">Finalizar cadastro</button>
+                                                <span id="msgErroCadastro"></span>
                                             </form>
                                 </div>
                                 <div class="modal-footer">

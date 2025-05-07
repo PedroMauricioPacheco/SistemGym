@@ -1,41 +1,29 @@
-function pegarValores(form) {
-    return {
-        usuario: form.querySelector('[name="usuario"]')?.value.trim(),
-        email: form.querySelector('[name="email"]')?.value.trim(),
-        senha: form.querySelector('[name="senha"]')?.value.trim(),
-        msgErro: form.querySelector('.msgErro'),
-    };
-}
+function VerificaLogin(event) {
+    const form = document.getElementById('formLogin');
+    const usuario = document.getElementById('usuarioLogin').value.trim();
+    const senha = document.getElementById('senhaLogin').value.trim();
+    const message = document.querySelector('.msgErroLogin');
 
-function validarLogin(event) {
-    const form = event.target;
-    const { usuario, senha, msgErro } = pegarValores(form);
-
-    if (!usuario || !senha) {
+    if(!usuario || !senha){
         event.preventDefault();
-        if (msgErro) {
-            msgErro.textContent = "Preencha todos os campos";
-            msgErro.classList.add("mostrar");
-            setTimeout(() => msgErro.textContent = "", 3000);
-        }
-    } else {
-        if (msgErro) msgErro.textContent = "";
+        message.textContent = 'Preencha todos os campos';
+        setTimeout(() => message.textContent = '', 5000);
     }
 }
 
-function validarCadastro(event) {
-    const form = event.target;
-    const { usuario, email, senha, msgErro } = pegarValores(form);
 
-    if (!usuario || !email || !senha) {
+
+function VericaCadastro(event){
+    const form = document.getElementById('formCadastro');
+    const usuario = document.getElementById('usuarioCadastro').value.trim();
+    const email = document.getElementById('emailCadastro').value.trim();
+    const senha = document.getElementById('senhaCadastro').value.trim();
+    const message = document.getElementById('msgErroCadastro')
+
+    if(!usuario || !email || !senha){
         event.preventDefault();
-        if (msgErro) {
-            msgErro.textContent = "Preencha todos os campos";
-            msgErro.classList.add("mostrar");
-            setTimeout(() => msgErro.textContent = "", 3000);
-        }
-    } else {
-        if (msgErro) msgErro.textContent = "";
+        message.textContent = 'Preencha todos os campos';
+        setTimeout(() => message.textContent = '', 5000)
     }
 }
 
@@ -44,4 +32,4 @@ function iniciarEventos() {
     document.getElementById('formCadastro')?.addEventListener('submit', validarCadastro);
 }
 
-window.addEventListener("DOMContentLoaded", iniciarEventos);
+window.addEventListener("DOMContentLoaded", iniciarEventos)
