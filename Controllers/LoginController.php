@@ -1,6 +1,5 @@
 <?php
     include __DIR__ . '/../Model/LoginModel.php';
-    
     $action = $_POST['action'] ?? '';
 
     switch($action){
@@ -16,7 +15,11 @@
         global $checarLogin;
             $usuario = $_POST['usuario']?? '';
             $senha = $_POST['senha']?? '';
-            validarLogin($usuario, $senha, $checarLogin);
+            if(!validarLogin($usuario,$senha)){
+                header("Location: ../HTML/Login.html");
+            }else{
+                header("Location: ../HTML/Home.html");
+            }
     }
     function cadastro($action){
             $usuario = $_POST['usuario']?? '';
@@ -26,6 +29,8 @@
             
             if(!usuarioRepetido($pdo,$checarRepetido,$usuario)){
                 cadastrandoUsuario($pdo,$inserirUsuario,$usuario,$email,$senha);
+                header("Location: ../HTML/Login.html");
+                exit;
             }
         
     }
@@ -38,17 +43,10 @@
         $stmt = $pdo->prepare($inserirUsuario);
         $stmt->execute([$usuario, $email, $senha]);
     }        
-        function validarLogin($usuario,$senha,$checarLogin){
-            global $pdo;
+        function validarLogin($usuario,$senha){
+            global $pdo,$checarLogin;
             $stmt = $pdo -> prepare($checarLogin);
             $stmt -> execute([$usuario, $senha]);
-            $resultado = $stmt -> fetch();
-            if($resultado !== false){
-                header("Location: ../HTML/Gerenciar.html");
-                exit;
-            }else{
-                header("Location: ../HTML/Login.html?");
-                exit;
-            }
+            return $stmt -> rowCount() > 0;
         }
 ?>

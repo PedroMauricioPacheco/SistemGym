@@ -53,7 +53,9 @@
                     <input type="text" name="contato" placeholder="Contato">
                     <input name="action" type="hidden" value="pesquisar">
                     <button type="submit" class="btn btn-info" name="pesquisar" id="pesquisar">Buscar</button>
-                    <a href="Cadastro.html" class="btn btn-info">Novo</a>
+                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                      Novo Aluno
+                  </button>
                 </form>
                 <div class="container">
                     <table class="table">
@@ -63,6 +65,7 @@
                             <th scope="col">Nome</th>
                             <th scope="col">CPF</th>
                             <th scope="col">Contato</th>
+                            <th></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -71,6 +74,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td><i class="fa-solid fa-pen"></i></td>
                           </tr>
                           <tr>
                             <th scope="row">2</th>
@@ -84,11 +88,46 @@
                             <td></td>
                             <td></td>
                           </tr>
+                          
                         </tbody>
                       </table>
                 </div>
             </div>
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Cadastro</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="container d-flex flex-column align-items-center">
+                        <div class="formCadastroAluno d-flex flex-column align-items-center justify-content-center">
+                            <form class="d-flex flex-column mt-3 mb-0" id="formCadastroAluno" action="../Controllers/LoginController.php" method="post">
+                                  <h4 class="main-tittle">Login</h4>
+                                  <h6>Nome</h6>
+                                  <input type="text" name="nomeAluno" id="nomeALuno">
+                                  <h6>CPF</h6>
+                                  <input type="text" name="cpfAluno" id="cpfAluno">
+                                  <h6>Data de nascimento</h6>
+                                  <input type="date" name="dataNascimentoAluno" id="dataNascimentoAluno">
+                                  <h6>Telefone</h6>
+                                  <input type="text" name="telefoneAluno" id="telefoneAluno">
+                                  <h6>Email</h6>
+                                  <input type="email" name="emailAluno" id="emailAluno">
+                                  <input type="hidden" name="action" value="cadastraAluno">
+                                  <button class="btn btn-info " type="submit" >Finalizar cadastro</button>
+                                  <span id="msgErroCadastroAluno"></span>
+                              </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
     </main>
-
+    
 </body>
 </html>

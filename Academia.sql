@@ -13,7 +13,7 @@ CREATE TABLE Alunos
 );
 CREATE TABLE Treinos 
 (
-	codigo INT auto_increment PRIMARY KEY,
+	id INT auto_increment PRIMARY KEY,
     id_aluno INT,
     data_inicio DATE,
     dia_semana VARCHAR (20),
