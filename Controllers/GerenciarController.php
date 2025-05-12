@@ -1,9 +1,10 @@
 <?php
+    var_dump($_POST); // ← Adicione isso aqui
     include __DIR__ . '/../Model/LoginModel.php';
     $action = $_POST['action'] ?? '';
 
     switch($action){
-        case('cadastraAluno');
+        case('cadastraAluno'):
             CadastraAluno($action);
             break;
     }
@@ -14,13 +15,14 @@
         $dataNascimentoAluno = $_POST['dataNascimentoAluno'] ?? '';
         $telefoneAluno = $_POST['telefoneAluno'] ?? '';
         $emailAluno = $_POST['emailAluno'] ?? '';
-        var_dump($_POST);
-        exit;
         global $pdo, $checarAlunoRepetido, $inserirAluno;
 
         if(!alunoRepetido($pdo,$checarAlunoRepetido,$nomeAluno)){
             cadastrandoAluno($pdo,$inserirAluno,$nomeAluno,$cpfAluno,$dataNascimentoAluno,$telefoneAluno,$emailAluno);
-            header("Location: ..HTML/Gerenciar.html");
+            header("Location: ../HTML\Gerenciar.html");
+            exit;
+        }else{
+            header("Location: ../HTML/Gerenciar.html");
             exit;
         }
     }
