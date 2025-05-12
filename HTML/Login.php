@@ -46,7 +46,7 @@
             <div class="container d-flex flex-column align-items-center">
                   <h4 class="main-tittle">Faça login ou cadastre-se</h4>
                 <div class=" formLogin d-flex flex-column align-items-center justify-content-center">
-                    <form id="formLogin" onsubmit="VerificaLogin(event)" action="../Controllers/LoginController.php" method="post">
+                    <form id="formLogin" action="../Controllers/LoginController.php" method="post">
                         <h4 class="main-tittle">Login</h4>
                         <h6>Usuário</h6>
                         <input type="text" name="usuario" id="usuarioLogin">
@@ -54,7 +54,7 @@
                         <input type="password" name="senha" id="senhaLogin">
                         <input type="hidden" name="action" value="login">
                         <button class="btn btn-info d-flex" type="submit">Login</button>
-                        <span class="msgErroLogin"></span>
+                        <span class="msgErroLogin" id="msgErroLogin"></span>
                     </form>
                     <div class="fazerCadastrado d-flex flex-column align-items-center mt-4">
                         <h6>Não é cadastrado?</h6>   
@@ -71,7 +71,7 @@
                                 <div class="modal-body">
                                     <div class="container d-flex flex-column align-items-center">
                                       <div class="formCadastro d-flex flex-column align-items-center justify-content-center">
-                                          <form class="d-flex flex-column" id="formCadastroAluno" action="../Controllers/LoginController.php" method="post">
+                                          <form class="d-flex flex-column" id="formCadastro" action="../Controllers/LoginController.php" method="post">
                                                 <h4 class="main-tittle">Login</h4>
                                                 <h6>Usuário</h6>
                                                 <input type="text" name="usuario" id="usuarioCadastro">

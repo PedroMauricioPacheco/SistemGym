@@ -16,7 +16,7 @@
             $usuario = $_POST['usuario']?? '';
             $senha = $_POST['senha']?? '';
             if(!validarLogin($usuario,$senha)){
-                header("Location: ../HTML/Login.html");
+                header("Location: ../HTML/Login.php");
             }else{
                 header("Location: ../HTML/Home.html");
             }
@@ -29,7 +29,10 @@
             
             if(!usuarioRepetido($pdo,$checarRepetido,$usuario)){
                 cadastrandoUsuario($pdo,$inserirUsuario,$usuario,$email,$senha);
-                header("Location: ../HTML/Login.html");
+                header("Location: ../HTML/Login.php");
+                exit;
+            }else{
+                header("Location: /SistemGym/HTML/Login.php?erro=usuario");
                 exit;
             }
         

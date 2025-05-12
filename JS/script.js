@@ -2,7 +2,7 @@ function VerificaLogin(event) {
     const form = document.getElementById('formLogin');
     const usuario = document.getElementById('usuarioLogin').value.trim();
     const senha = document.getElementById('senhaLogin').value.trim();
-    const message = document.querySelector('.msgErroLogin');
+    const message = document.getElementById('msgErroLogin');
 
     if(!usuario || !senha){
         event.preventDefault();
@@ -26,10 +26,17 @@ function VericaCadastro(event){
         setTimeout(() => message.textContent = '', 5000)
     }
 }
+function spanUsuarioRepetido (){
+    const usuarioRepetido = new URLSearchParams(window.location.search);
+    if (usuarioRepetido.get('erro')=='usuario'){
+        document.getElementById('msgErroLogin').textContent = 'Usuário já cadastrado';
+    }
+}
 
 function iniciarEventos() {
     document.getElementById('formLogin')?.addEventListener('submit', VerificaLogin);
-    document.getElementById('formCadastro')?.addEventListener('submit', VericaCadastro);
+    document.getElementById('formCadastro')?.addEventListener('submit', VerificaCadastro);
+    spanUsuarioRepetido();
 }
 
 window.addEventListener("DOMContentLoaded", iniciarEventos)
