@@ -5,7 +5,7 @@ CREATE TABLE Alunos
 	id_aluno INT auto_increment PRIMARY KEY,
     nome VARCHAR(40),
     cpf  VARCHAR(14),
-    data_nascimento DATE,
+    data_nascimento DATE, 
     telefone VARCHAR(20),
     email VARCHAR(40),
     data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,

@@ -7,8 +7,39 @@
             login($action);
             break;
         case 'cadastro':
+            $usuario = new Usuario($usuario,$email,$senha);
             cadastro($action);
             break;
+    }
+    class Usuario{
+        private $usuario;
+        private $email;
+        private $senha;
+    
+    function __construct($usuario,$email,$senha){
+        $this->usuario = $usuario;
+        $this->email = $email;
+        $this->senha = $senha;
+    }
+    
+    function getUsuario(){
+        return $this->usuario;
+    }
+    function getEmail(){
+        return $this->email;
+    }
+    function getSenha(){
+        return $this->senha;
+    }
+    function setUsuario($usuario){
+        $this->usuario = $usuario;
+    }
+    function setEmail($email){
+        $this->email = $email;
+    }
+    function setSenha($senha){
+        $this->senha = $senha;
+    }
     }
     
     function login($action){
