@@ -16,28 +16,28 @@
         private $email;
         private $senha;
     
-    function __construct($usuario,$email,$senha){
+    public function __construct($usuario,$email,$senha){
         $this->usuario = $usuario;
         $this->email = $email;
         $this->senha = $senha;
     }
     
-    function getUsuario(){
+    public function getUsuario(){
         return $this->usuario;
     }
-    function getEmail(){
+    public function getEmail(){
         return $this->email;
     }
-    function getSenha(){
+    public function getSenha(){
         return $this->senha;
     }
-    function setUsuario($usuario){
+    public function setUsuario($usuario){
         $this->usuario = $usuario;
     }
-    function setEmail($email){
+    public function setEmail($email){
         $this->email = $email;
     }
-    function setSenha($senha){
+    public function setSenha($senha){
         $this->senha = $senha;
     }
     }

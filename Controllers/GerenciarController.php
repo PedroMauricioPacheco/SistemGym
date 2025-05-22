@@ -6,7 +6,7 @@
     switch($action){
         case('cadastraAluno'):
             $aluno = new Aluno();
-            $aluno -> CadastraAluno($action);
+            CadastraAluno($action);
             break;
     }
     class Aluno{
@@ -16,37 +16,46 @@
         private $telefone;
         private $email;
 
-        function getNome(){
-            return $this->nome;
-        }
-        function getCpf(){
-            return $this->cpf;
-        }
-        function getDataNascimento(){
-            return $this->dataNascimento;
-        }
-        function getTelefone(){
-            return $this->telefone;
-        }
-        function getEmail(){
-            return $this->email;
-        }
-        function setNome($nome){
+        public function __construct($nome,$cpf,$dataNascimento,$telefone,$email)
+        {
             $this->nome = $nome;
-        }
-        function setCpf($cpf){
             $this->cpf = $cpf;
-        }
-        function setDataNascimento($dataNascimento){
-            $this->dataNascimento = $dataNascimento;
-        }
-        function setTelefone($telefone){
+            $this->dataNascimento =$dataNascimento;
             $this->telefone = $telefone;
-        }
-        function setEmail($email){
             $this->email = $email;
         }
-    
+
+        public function getNome(){
+            return $this->nome;
+        }
+        public function getCpf(){
+            return $this->cpf;
+        }
+        public function getDataNascimento(){
+            return $this->dataNascimento;
+        }
+        public function getTelefone(){
+            return $this->telefone;
+        }
+        public function getEmail(){
+            return $this->email;
+        }
+        public function setNome($nome){
+            $this->nome = $nome;
+        }
+        public function setCpf($cpf){
+            $this->cpf = $cpf;
+        }
+        public function setDataNascimento($dataNascimento){
+            $this->dataNascimento = $dataNascimento;
+        }
+        public function setTelefone($telefone){
+            $this->telefone = $telefone;
+        }
+        public function setEmail($email){
+            $this->email = $email;
+        }
+    } 
     
     function CadastraAluno($action){
         $nomeAluno = $_POST['nomeAluno'] ?? '';
@@ -74,5 +83,4 @@
             $stmt = $pdo->prepare($inserirAluno);
             $stmt->execute([$nomeAluno,$cpfAluno,$dataNascimentoAluno,$telefoneAluno,$emailAluno]);
         } 
-    }
 ?>
