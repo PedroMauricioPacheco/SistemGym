@@ -1,12 +1,16 @@
 <?php
-    var_dump($_POST); // ← Adicione isso aqui
     require_once __DIR__ . '/../Model/LoginModel.php';
     $action = $_POST['action'] ?? '';
 
     switch($action){
         case('cadastraAluno'):
-            $aluno = new Aluno();
-            CadastraAluno($action);
+            $nomeAluno = $_POST['nomeAluno'] ?? '';
+            $cpfAluno = $_POST['cpfAluno'] ?? '';
+            $dataNascimentoAluno = $_POST['dataNascimentoAluno'] ?? '';
+            $telefoneAluno = $_POST['telefoneAluno'] ?? '';
+            $emailAluno = $_POST['emailAluno'] ?? '';
+            $aluno = new Aluno($nome,$cpf,$dataNascimento,$telefone,$email);
+            CadastraAluno($aluno);
             break;
     }
     class Aluno{
@@ -57,16 +61,11 @@
         }
     } 
     
-    function CadastraAluno($action){
-        $nomeAluno = $_POST['nomeAluno'] ?? '';
-        $cpfAluno = $_POST['cpfAluno'] ?? '';
-        $dataNascimentoAluno = $_POST['dataNascimentoAluno'] ?? '';
-        $telefoneAluno = $_POST['telefoneAluno'] ?? '';
-        $emailAluno = $_POST['emailAluno'] ?? '';
+    function CadastraAluno($aluno){
         global $pdo, $checarAlunoRepetido, $inserirAluno;
 
-            if(!alunoRepetido($pdo,$checarAlunoRepetido,$nomeAluno)){
-                cadastrandoAluno($pdo,$inserirAluno,$nomeAluno,$cpfAluno,$dataNascimentoAluno,$telefoneAluno,$emailAluno);
+            if(!alunoRepetido($pdo,$checarAlunoRepetido,$aluno->getNome())){
+                cadastrandoAluno($pdo,$inserirAluno,$aluno->getNome(),$aluno->getCpf(),$aluno->getDataNascimento(),$aluno->getTelefone(),$aluno->getEmail());
                 header("Location: ../HTML\Gerenciar.html");
                 exit;
             }else{
