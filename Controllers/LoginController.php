@@ -1,4 +1,6 @@
 <?php
+
+    die();
     require_once __DIR__ . '/../Model/LoginModel.php';
     $action = $_POST['action'] ?? '';
 
@@ -7,9 +9,9 @@
             login($action);
             break;
         case 'cadastro':
-            $usuario = $_POST['usuario']?? '';
-            $email = $_POST['email']?? '';
-            $senha = $_POST['senha']?? '';
+            $usuario = $_POST['usuario'] ?: '';
+            $email = $_POST['email'] ?: '';
+            $senha = $_POST['senha'] ?: '';
             $usuarioOBJ = new Usuario($usuario,$email,$senha);
             cadastro($usuarioOBJ);
             break;
