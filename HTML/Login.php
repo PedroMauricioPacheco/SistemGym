@@ -71,7 +71,7 @@
                                 <div class="modal-body">
                                     <div class="container d-flex flex-column align-items-center">
                                       <div class="formCadastro d-flex flex-column align-items-center justify-content-center">
-                                          <form class="d-flex flex-column" id="formCadastro" action="../Controllers/LoginController.php" method="post">
+                                          <div class="d-flex flex-column" id="formCadastro" method="post">
                                                 <h4 class="main-tittle">Login</h4>
                                                 <h6>Usuário</h6>
                                                 <input type="text" name="usuario" id="usuarioCadastro">
@@ -79,10 +79,10 @@
                                                 <input type="email" name="email" id="emailCadastro">
                                                 <h6>Senha</h6>
                                                 <input type="password" name="senha" id="senhaCadastro">
-                                                <input type="hidden" name="action" value="cadastro">
-                                                <button class="btn btn-info " type="submit" >Finalizar cadastro</button>
+                                                <input type="hidden" id="action" name="action" value="cadastro">
+                                                <button class="btn btn-info " onclick="validaFormCadastraUsuario()" >Finalizar cadastro</button>
                                                 <span id="msgErroCadastro"></span>
-                                            </form>
+                                            </div>
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -96,3 +96,79 @@
           </div>
         </div>
     </main>
+    <script>
+
+        function validaFormCadastraUsuario(){
+            debugger
+            const formCadastro = document.getElementById('formCadastro');
+            const usuarioCadastro = document.getElementById('usuarioCadastro');
+            const emailCadastro = document.getElementById('emailCadastro');
+            const senhaCadastro = document.getElementById('senhaCadastro');
+            const msgErroCadastro = document.getElementById('msgErroCadastro');
+            const action = document.getElementById('action');
+
+            formCadastro.addEventListener('submit', function(event) {
+                let errors = [];
+
+                if (usuarioCadastro.value.trim() === '') {
+                    errors.push('O campo "Usuário" é obrigatório.');
+                }
+
+                if (emailCadastro.value.trim() === '') {
+                    errors.push('O campo "Email" é obrigatório.');
+                } else if (!/\S+@\S+\.\S+/.test(emailCadastro.value)) {
+                    errors.push('O campo "Email" deve conter um endereço de email válido.');
+                }
+
+                if (senhaCadastro.value.trim() === '') {
+                    errors.push('O campo "Senha" é obrigatório.');
+                } else if (senhaCadastro.value.length < 6) {
+                    errors.push('A senha deve ter pelo menos 6 caracteres.');
+                }
+
+                if (errors.length > 0) {
+                    event.preventDefault();
+                    msgErroCadastro.innerHTML = errors.join('<br>');
+                    msgErroCadastro.style.color = 'red';
+                } else {
+                    msgErroCadastro.innerHTML = '';
+                }
+            });
+
+
+            data = {
+                "usuario": usuarioCadastro.value,
+                "email": emailCadastro.value,
+                "senha": senhaCadastro.value,
+            }
+
+            dados = {
+                "action": "validaCadastro",
+                "data": data
+            };
+
+            fetchCadastroUsuario(dados);
+
+            return;
+        }
+
+        function fetchCadastroUsuario(dados) {
+            const formData = new FormData();
+            formData.append('action', dados.action);
+            formData.append('data', JSON.stringify(dados.data));
+
+            fetch('../Controllers/ControllerJson.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.cadastrado == true) {
+                    alert(data.msg);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+    </script>
+</body>
