@@ -13,4 +13,6 @@
     /* Gerenciar */
     $inserirAluno = "INSERT INTO alunos (nome,cpf,data_nascimento,telefone,email) VALUES (?,?,?,?,?)";
     $checarAlunoRepetido = "SELECT COUNT(*) FROM alunos WHERE nome = ?";
+    $selecionarTodosAlunos = "SELECT * FROM alunos";
+
 ?>

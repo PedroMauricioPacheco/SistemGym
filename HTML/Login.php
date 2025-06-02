@@ -71,7 +71,7 @@
                                 <div class="modal-body">
                                     <div class="container d-flex flex-column align-items-center">
                                       <div class="formCadastro d-flex flex-column align-items-center justify-content-center">
-                                          <div class="d-flex flex-column" id="formCadastro" method="post">
+                                          <form class="d-flex flex-column" id="formCadastro" method="post">
                                                 <h4 class="main-tittle">Login</h4>
                                                 <h6>Usuário</h6>
                                                 <input type="text" name="usuario" id="usuarioCadastro">
@@ -80,9 +80,9 @@
                                                 <h6>Senha</h6>
                                                 <input type="password" name="senha" id="senhaCadastro">
                                                 <input type="hidden" id="action" name="action" value="cadastro">
-                                                <button class="btn btn-info " onclick="validaFormCadastraUsuario()" >Finalizar cadastro</button>
+                                                <button class="btn btn-info" type="submit">Finalizar cadastro</button>
                                                 <span id="msgErroCadastro"></span>
-                                            </div>
+                                            </form>
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -99,7 +99,7 @@
     <script>
 
         function validaFormCadastraUsuario(){
-            debugger
+            
             const formCadastro = document.getElementById('formCadastro');
             const usuarioCadastro = document.getElementById('usuarioCadastro');
             const emailCadastro = document.getElementById('emailCadastro');
@@ -108,7 +108,6 @@
             const action = document.getElementById('action');
 
             formCadastro.addEventListener('submit', function(event) {
-                let errors = [];
 
                 if (usuarioCadastro.value.trim() === '') {
                     errors.push('O campo "Usuário" é obrigatório.');
@@ -172,3 +171,4 @@
 
     </script>
 </body>
+</html>
