@@ -49,13 +49,31 @@ class ControllerJson
         $cadastrado = $stmt->fetchColumn() > 0;
         return $cadastrado;
     }
+    public function validaLogin()
+{
+    $usuario = $this->dados['usuario'];
+    $senha = $this->dados['senha'];
+
+    // Consulta o usuário e senha
+    $sql = "SELECT COUNT(*) FROM usuarios WHERE usuario = ? AND senha = ?";
+    $stmt = $this->banco->prepare($sql);
+    $stmt->execute([$usuario, $senha]);
+    $existe = $stmt->fetchColumn() > 0;
+
+    if ($existe) {
+        echo json_encode(['success' => true, 'msg' => 'Login realizado com sucesso!']);
+    } else {
+        echo json_encode(['success' => false, 'msg' => 'Usuário ou senha inválidos.']);
+    }
+    return;
+}
     public function buscarAlunos(){        
         $nomeAluno = '%'.$this->dados['nomeAluno']. '%';
         $cpfAluno = '%'.$this->dados['cpfAluno']. '%';
         $contatoAluno = '%'.$this->dados['contatoAluno']. '%';
         $dataNascimentoAluno = $this->dados['dataNascimentoAluno'];
 
-        $sql = "SELECT nome, cpf, telefone as contato, data_nascimento FROM alunos WHERE nome LIKE ? AND cpf LIKE ? AND telefone LIKE ?";
+        $sql = "SELECT id_aluno, nome, cpf, telefone as contato, data_nascimento FROM alunos WHERE nome LIKE ? AND cpf LIKE ? AND telefone LIKE ?";
         $params = [$nomeAluno, $cpfAluno, $contatoAluno];
 
         $stmt = $this->banco->prepare($sql);
@@ -95,4 +113,22 @@ class ControllerJson
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
+    public function popularCampoEditarAluno(){
+        $idAluno = $this->dados['id_aluno'];
+
+        $sql = "SELECT id_aluno, nome, cpf, telefone as contato, data_nascimento,email FROM alunos WHERE id_aluno = ?";
+        $stmt = $this->banco->prepare($sql);
+        $stmt->execute([$idAluno]);
+        $aluno = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($aluno) {
+            if (!empty($aluno['data_nascimento'])) {
+                $aluno['data_nascimento'] = date('d/m/Y', strtotime($aluno['data_nascimento']));
+            }
+            echo json_encode($aluno);
+        } else {
+            echo json_encode(['error' => 'Aluno não encontrado.']);
+        }
+    }
+        
 }

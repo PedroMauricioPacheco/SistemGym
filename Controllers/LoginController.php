@@ -4,9 +4,6 @@
     $action = $_POST['action'] ?? '';
 
     switch($action){
-        case 'login':
-            login($action);
-            break;
         case 'cadastro':
             $usuario = $_POST['usuario'] ?: '';
             $email = $_POST['email'] ?: '';
@@ -16,16 +13,6 @@
             break;
     }
     
-    function login($action){
-        global $checarLogin;
-            $usuario = $_POST['usuario']?? '';
-            $senha = $_POST['senha']?? '';
-            if(!validarLogin($usuario,$senha)){
-                header("Location: ../HTML/Login.php");
-            }else{
-                header("Location: ../HTML/Home.html");
-            }
-    }
     function cadastro($usuario){
     global $pdo, $inserirUsuario;
     $stmt = $pdo->prepare($inserirUsuario);
