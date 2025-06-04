@@ -117,9 +117,9 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="container d-flex flex-column align-items-center">
-                        <div class="formCadastroAluno d-flex flex-column align-items-center justify-content-center">
-                            <form class="d-flex flex-column mt-3 mb-0" id="formCadastroAluno">
-                                  
+                        <div class="formEditarAluno d-flex flex-column align-items-center justify-content-center">
+                          <span id="confirmarEdicoes" class="d-flex justify-content-center" ></span>
+                            <form class="d-flex flex-column mt-3 mb-0" id="formEditarAluno">
                                   <h6>Nome</h6>
                                   <input type="text" name="nomeAlunoEditar" id="nomeAlunoEditar">
                                   <h6>CPF</h6>
@@ -131,7 +131,8 @@
                                   <h6>Email</h6>
                                   <input type="email" name="emailAlunoEditar" id="emailAlunoEditar">
                                   <button class="btn btn-info " type="submit" style="margin-bottom: 10px;" >Confirmar edição</button>
-                                  <span id="msgErroCadastroAluno"></span>
+                                  
+                                  <input type="hidden" id="idAlunoEditar" name="idAlunoEditar">
                               </form>
                       </div>
         </div>

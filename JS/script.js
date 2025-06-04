@@ -1,102 +1,175 @@
-function VerificaLogin(event) {
-     const form = document.getElementById('formLogin');
+function validarCamposLogin() {
     const usuario = document.getElementById('usuarioLogin').value.trim();
-     const senha = document.getElementById('senhaLogin').value.trim();
-     const message = document.getElementById('msgErroLogin');
+    const senha = document.getElementById('senhaLogin').value.trim();
+    const message = document.getElementById('msgLogin');
 
-    if(!usuario || !senha){
-        event.preventDefault();
-         message.textContent = 'Preencha todos os campos';
-         setTimeout(() => message.textContent = '', 5000);
-     }
+    if (!usuario || !senha) {
+        message.textContent = 'Preencha todos os campos';
+        message.style.color = 'red';
+        setTimeout(() => message.textContent = '', 5000);
+        return false;
+    }
+    message.textContent = '';
+    return { usuario, senha };
 }
-function validaFormCadastraUsuario(){
-            
-            const formCadastro = document.getElementById('formCadastro');
-            const usuarioCadastro = document.getElementById('usuarioCadastro');
-            const emailCadastro = document.getElementById('emailCadastro');
-            const senhaCadastro = document.getElementById('senhaCadastro');
-            const msgErroCadastro = document.getElementById('msgErroCadastro');
-            const action = document.getElementById('action');
 
-            formCadastro.addEventListener('submit', function(event) {
+function VerificaLogin(event) {
+    event.preventDefault();
+    const campos = validarCamposLogin();
+    if (!campos) return;
 
-                if (usuarioCadastro.value.trim() === '') {
-                    errors.push('O campo "Usuário" é obrigatório.');
-                }
+    enviarLogin(campos);
+}
 
-                if (emailCadastro.value.trim() === '') {
-                    errors.push('O campo "Email" é obrigatório.');
-                } else if (!/\S+@\S+\.\S+/.test(emailCadastro.value)) {
-                    errors.push('O campo "Email" deve conter um endereço de email válido.');
-                }
+function enviarLogin(dados) {
+    const message = document.getElementById('msgLogin');
+    const formData = new FormData();
+    formData.append('action', 'validaLogin');
+    formData.append('data', JSON.stringify(dados));
 
-                if (senhaCadastro.value.trim() === '') {
-                    errors.push('O campo "Senha" é obrigatório.');
-                } else if (senhaCadastro.value.length < 6) {
-                    errors.push('A senha deve ter pelo menos 6 caracteres.');
-                }
-
-                if (errors.length > 0) {
-                    event.preventDefault();
-                    msgErroCadastro.innerHTML = errors.join('<br>');
-                    msgErroCadastro.style.color = 'red';
-                } else {
-                    msgErroCadastro.innerHTML = '';
-                }
-            });
-
-
-            data = {
-                "usuario": usuarioCadastro.value,
-                "email": emailCadastro.value,
-                "senha": senhaCadastro.value,
-            }
-
-            dados = {
-                "action": "validaCadastro",
-                "data": data
-            };
-
-            fetchCadastroUsuario(dados);
-
-            return;
+    fetch('../Controllers/ControllerJson.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = 'Home.html';
+        } else {
+            message.textContent = data.msg || 'Usuário ou senha inválidos.';
+            message.style.color = 'red';
         }
+    })
+    .catch(error => {
+        message.textContent = 'Erro ao tentar logar.';
+        message.style.color = 'red';
+        console.error(error);
+    });
+}
+function validaFormCadastraUsuario(event) {
+    event.preventDefault();
+    const usuarioCadastro = document.getElementById('usuarioCadastro');
+    const emailCadastro = document.getElementById('emailCadastro');
+    const senhaCadastro = document.getElementById('senhaCadastro');
+    const msgCadastro = document.getElementById('msgCadastro');
+    let errors = [];
 
-        function fetchCadastroUsuario(dados) {
-            const formData = new FormData();
-            formData.append('action', dados.action);
-            formData.append('data', JSON.stringify(dados.data));
+    if (usuarioCadastro.value.trim() === '') {
+        errors.push('O campo "Usuário" é obrigatório.');
+    }
+    if (emailCadastro.value.trim() === '') {
+        errors.push('O campo "Email" é obrigatório.');
+    } else if (!/\S+@\S+\.\S+/.test(emailCadastro.value)) {
+        errors.push('O campo "Email" deve conter um endereço de email válido.');
+    }
+    if (senhaCadastro.value.trim() === '') {
+        errors.push('O campo "Senha" é obrigatório.');
+    } else if (senhaCadastro.value.length < 6) {
+        errors.push('A senha deve ter pelo menos 6 caracteres.');
+    }
 
-            fetch('../Controllers/ControllerJson.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.cadastrado == true) {
-                    alert(data.msg);
-                }
-            })
-            .catch(error => console.error('Error:', error));
+    if (errors.length > 0) {
+        msgCadastro.innerHTML = errors.join('<br>');
+        msgCadastro.style.color = 'red';
+        return;
+    } else {
+        msgCadastro.innerHTML = '';
+    }
+
+    const data = {
+        usuario: usuarioCadastro.value,
+        email: emailCadastro.value,
+        senha: senhaCadastro.value,
+    };
+
+    const dados = {
+        action: "validaCadastro",
+        data: data
+    };
+
+    fetchCadastroUsuario(dados);
+}
+
+function fetchCadastroUsuario(dados) {
+    const formData = new FormData();
+    formData.append('action', dados.action);
+    formData.append('data', JSON.stringify(dados.data));
+
+    fetch('../Controllers/ControllerJson.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        const msgCadastro = document.getElementById('msgCadastro');
+        if (data.cadastrado === false) {
+            msgCadastro.textContent = 'Usuário já cadastrado';
+            msgCadastro.style.color = 'red';
+        } else if (data.cadastrado === true || data.success) {
+            msgCadastro.textContent = 'Usuário cadastrado com sucesso!';
+            msgCadastro.style.color = 'green';
         }
+    })
+    .catch(error => {
+        const msgCadastro = document.getElementById('msgCadastro');
+        msgCadastro.textContent = 'Erro ao cadastrar usuário.';
+        msgCadastro.style.color = 'red';
+        console.error('Error:', error);
+    });
+}
 
 
 function iniciarEventos() {
     document.getElementById('formLogin')?.addEventListener('submit', VerificaLogin);
-    document.getElementById('formCadastro')?.addEventListener('submit', VerificaCadastro);
+    document.getElementById('formCadastro')?.addEventListener('submit', validaFormCadastraUsuario);
     document.getElementById('formCadastroAluno')?.addEventListener('submit', aoEnviarCadastroAluno);
-    document.getElementById('formBuscarAlunos')?.addEventListener('submit', async function (e) {
-    document.getElementById('formLogin')?.addEventListener('submit', validaFormLogin);
-
-        e.preventDefault();
-        const dados = coletarDadosFormularioAluno();
-        const alunos = await buscarAlunos(dados);
-        console.log(alunos); // Adicione esta linha para depurar
-        preencherTabela(alunos);
-    });
+    document.getElementById('formBuscarAlunos')?.addEventListener('submit', aoBuscarAlunos);
+    document.getElementById('formEditarAluno')?.addEventListener('submit', aoEnviarEdicaoAluno);
     spanUsuarioRepetido();
 }
+
+async function aoBuscarAlunos(e) {
+    e.preventDefault();
+    const dados = coletarDadosFormularioAluno();
+    const alunos = await buscarAlunos(dados);
+    preencherTabela(alunos);
+}
+function coletarDadosEdicaoAluno() {
+    return dados={
+        nome: document.getElementById('nomeAlunoEditar').value,
+        cpf: document.getElementById('cpfAlunoEditar').value,
+        data_nascimento: document.getElementById('dataNascimentoAlunoEditar').value,
+        contato: document.getElementById('telefoneAlunoEditar').value,
+        email: document.getElementById('emailAlunoEditar').value,
+        id_aluno: document.getElementById('idAlunoEditar').value
+    };
+}
+async function editarAluno(dados) {
+    const respostaFetch = await fetch('../Controllers/ControllerJson.php?action=editarAluno', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `data=${encodeURIComponent(JSON.stringify(dados))}`
+    });
+
+    return await respostaFetch.json();
+}
+async function aoEnviarEdicaoAluno(event) {
+    event.preventDefault();
+    document.getElementById('confirmarEdicoes').textContent = ''; 
+
+    const dados = coletarDadosEdicaoAluno();
+    const resposta = await editarAluno(dados);
+    if (resposta.success) {
+        document.getElementById('confirmarEdicoes').textContent = 'Aluno editado com sucesso!';
+        setTimeout(() => document.getElementById('confirmarEdicoes').textContent = '', 5000);
+        const alunos = await buscarAlunos({});
+        preencherTabela(alunos);
+    } else {
+        document.getElementById('confirmarEdicoes').textContent = 'Erro ao editar aluno. Verifique os dados.';
+        setTimeout(() => document.getElementById('confirmarEdicoes').textContent = '', 5000);
+    }
+}
+
 function coletarDadosFormularioAluno(){
     return {
         nomeAluno : document.getElementById('nomeAlunoBusca').value,
@@ -152,6 +225,7 @@ async function buscarAlunoPorId(id) {
 async function popularModalEditarAluno(id) {
     const aluno = await buscarAlunoPorId(id);
     if (aluno) {
+        document.getElementById('idAlunoEditar').value = aluno.id_aluno;
         document.getElementById('nomeAlunoEditar').value = aluno.nome;
         document.getElementById('cpfAlunoEditar').value = aluno.cpf;
         document.getElementById('dataNascimentoAlunoEditar').value = aluno.data_nascimento || '';
@@ -184,56 +258,12 @@ async function aoEnviarCadastroAluno(event) {
     
     if (resposta.success) {
         document.getElementById('msgErroCadastroAluno').textContent = 'Aluno cadastrado com sucesso!';
+        document.getElementById('msgErroCadastroAluno').style.color = 'green';
         document.getElementById('formCadastroAluno').reset();
     } else {
         document.getElementById('msgErroCadastroAluno').textContent = 'Aluno já cadastrado';
     }
 }
-function fetchValidaLogin(dados) {
-    const formData = new FormData();
-    formData.append('action', 'validaLogin');
-    formData.append('data', JSON.stringify(dados));
 
-    return fetch('../Controllers/ControllerJson.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json());
-}
-
-function validaFormLogin(event) {
-    event.preventDefault();
-    const usuario = document.getElementById('usuarioLogin').value.trim();
-    const senha = document.getElementById('senhaLogin').value.trim();
-    const msgErroLogin = document.getElementById('msgErroLogin');
-    let errors = [];
-
-    if (!usuario) errors.push('O campo "Usuário" é obrigatório.');
-    if (!senha) errors.push('O campo "Senha" é obrigatório.');
-
-    if (errors.length > 0) {
-        msgErroLogin.innerHTML = errors.join('<br>');
-        msgErroLogin.style.color = 'red';
-        return;
-    } else {
-        msgErroLogin.innerHTML = '';
-    }
-
-    const dados = { usuario, senha };
-
-    fetchValidaLogin(dados)
-        .then(data => {
-            if (data.success) {
-                window.location.href = 'Gerenciar.html'; // ou a página desejada
-            } else {
-                msgErroLogin.textContent = data.msg || 'Usuário ou senha inválidos.';
-                msgErroLogin.style.color = 'red';
-            }
-        })
-        .catch(error => {
-            msgErroLogin.textContent = 'Erro ao tentar logar.';
-            msgErroLogin.style.color = 'red';
-        });
-}
 
 window.addEventListener("DOMContentLoaded", iniciarEventos)

@@ -35,7 +35,9 @@ class ControllerJson
         if ($cadastrado) {
             $retorno['msg'] = 'Usuário já cadastrado.';
         }
+        else{
 
+        }
         echo json_encode($retorno);
         return;
     }
@@ -45,12 +47,30 @@ class ControllerJson
         $sql = "SELECT COUNT(*) FROM usuarios WHERE usuario = ?";
         $stmt = $this->banco->prepare($sql);
         $stmt->execute([$usuario]);
-
         $cadastrado = $stmt->fetchColumn() > 0;
+        if ($cadastrado) {
+            error_log("Usuário já cadastrado: " . $usuario);
+        } else {
+            $this->cadastrarUsuario();
+        }
         return $cadastrado;
     }
-    public function validaLogin()
-{
+    public function cadastrarUsuario(){
+        $usuario = $this->dados['usuario'];
+        $email = $this->dados['email'];
+        $senha = $this->dados['senha'];
+        
+        $sql = "INSERT INTO usuarios (usuario, email, senha) VALUES (?, ?, ?)";
+        $stmt = $this->banco->prepare($sql);
+        try{
+            $stmt->execute([$usuario, $email, $senha]);
+            echo json_encode(['success' => true, 'msg' => 'Usuário cadastrado com sucesso!']);
+        } catch (PDOException $e) {
+            error_log("Erro ao cadastrar usuário: " . $e->getMessage());
+            echo json_encode(['success' => false, 'error' => 'Erro ao cadastrar usuário.']);
+        }
+    }
+    public function validaLogin(){
     $usuario = $this->dados['usuario'];
     $senha = $this->dados['senha'];
 
@@ -128,6 +148,22 @@ class ControllerJson
             echo json_encode($aluno);
         } else {
             echo json_encode(['error' => 'Aluno não encontrado.']);
+        }
+    }
+    public function editarAluno(){
+        $nome = $this->dados['nome'];
+        $cpf = $this->dados['cpf'];
+        $data_nascimento = $this->dados['data_nascimento'];
+        $telefone = $this->dados['contato'];
+        $email = $this->dados['email'];
+
+        $sql = "UPDATE alunos SET nome = ?, cpf = ?, data_nascimento = ?, telefone = ?, email = ? WHERE id_aluno = ?";
+        $stmt = $this->banco->prepare($sql);
+        try {
+            $stmt->execute([$nome, $cpf, $data_nascimento, $telefone, $email, $this->dados['id_aluno']]);
+            echo json_encode(['success' => true]);
+        } catch (PDOException $e) {
+            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
         
