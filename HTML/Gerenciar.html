@@ -18,7 +18,9 @@
     <!--FontAwesome-->
     <script src="https://kit.fontawesome.com/17c127de13.js" crossorigin="anonymous"></script>
     <!--Parallax-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/parallax.js/1.4.2/parallax.min.js"></script>
+    
 </head>
 <body>
     <header>
@@ -29,7 +31,7 @@
                         <a href="index.html" class="nav-item nav-link" id="home-menu">Início</a>
                         <a class="nav-item nav-link" id="about-menu">Dashbord</a>
                         <a class="nav-item nav-link" id="services-menu">Alunos</a>
-                        <a class="nav-item nav-link" id="team-menu">Treinos</a>
+                        <a href="Treinos.html" class="nav-item nav-link" id="team-menu">Treinos</a>
                         <a class="nav-item nav-link" id="portifolio-menu">Avaliações</a>
 
                     </div>
@@ -64,7 +66,7 @@
                             <th scope="col">Contato</th>
                             <th scope="col">Data de Nascimento</th>
                             <th scope="col">Editar</th>
-                            <th></th>
+                            <th scope="col">Excluir</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -131,7 +133,6 @@
                                   <h6>Email</h6>
                                   <input type="email" name="emailAlunoEditar" id="emailAlunoEditar">
                                   <button class="btn btn-info " type="submit" style="margin-bottom: 10px;" >Confirmar edição</button>
-                                  
                                   <input type="hidden" id="idAlunoEditar" name="idAlunoEditar">
                               </form>
                       </div>

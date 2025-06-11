@@ -166,5 +166,90 @@ class ControllerJson
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
     }
-        
+    public function apagarAluno(){
+        $idAluno = $this->dados['id_aluno'];
+
+        $sql = "SELECT COUNT(*) FROM alunos WHERE id_aluno = ?";
+        $stmt = $this->banco->prepare($sql);
+        $stmt->execute([$idAluno]);
+        $existe = $stmt->fetchColumn() > 0;
+
+        if (!$existe) {
+            echo json_encode(['success' => false, 'error' => 'Aluno não encontrado.']);
+            return;
+        }
+        $sql = "DELETE FROM treinos WHERE id_aluno = ?";
+        $stmt = $this->banco->prepare($sql);
+        $stmt->execute([$idAluno]);
+
+        $sql = "DELETE FROM alunos WHERE id_aluno = ?";
+        $stmt = $this->banco->prepare($sql);
+        try {
+            $stmt->execute([$idAluno]);
+            echo json_encode(['success' => true]);
+        } catch (PDOException $e) {
+            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+// Treinos
+    public function cadastrarTreino(){
+        $nomeAlunoTreinoCadastro = $this->dados['nomeAlunoTreinoCadastro'];
+        $nomeTreinoCadastro = $this->dados['nomeTreinoCadastro'];
+        $descricaoTreinoCadastro = $this->dados['descricaoTreinoCadastro'];
+        $dataInicioTreinoCadastro = $this->dados['dataInicioTreinoCadastro'];
+        $dataFimTreinoCadastro = $this->dados['dataFimTreinoCadastro'];
+
+        $sql = "SELECT id_aluno FROM alunos WHERE nome = ?";
+        $stmt = $this->banco->prepare($sql);
+        $stmt->execute([$nomeAlunoTreinoCadastro]);
+        $aluno = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$aluno) {
+            echo json_encode(['success' => false, 'error' => 'Aluno não encontrado.']);
+            return;
+        }
+        $sql = "INSERT INTO treinos (nome_treino, descricao, data_inicio, data_fim, id_aluno) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $this->banco->prepare($sql);
+        try {
+            $stmt->execute([
+                $nomeTreinoCadastro,
+                $descricaoTreinoCadastro,
+                $dataInicioTreinoCadastro,
+                $dataFimTreinoCadastro,
+                $aluno['id_aluno']
+            ]);
+            echo json_encode(['success' => true]);
+        } catch (PDOException $e) {
+            echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+    public function buscarTreinos(){
+        $nomeAlunoTreino = '%'.$this->dados['nomeAlunoTreino'].'%';
+        $dataInicioTreino = $this->dados['dataInicioTreino'];
+        $sql = "SELECT 
+                    a.nome AS nomeAlunoTreino,
+                    t.nome_treino AS nome_treino,
+                    t.descricao AS descricao_treino,
+                    t.data_inicio AS dataInicioTreino,
+                    t.data_fim AS dataFimTreino
+                FROM treinos t
+                INNER JOIN alunos a ON t.id_aluno = a.id_aluno
+                WHERE a.nome LIKE ?";
+
+        $params = [$nomeAlunoTreino];
+
+        if (!empty($dataInicioTreino)) {
+            $sql .= " AND t.data_inicio >= ?";
+            $params[] = $dataInicioTreino;
+        }
+        if (!empty($dataFimTreino)) {
+            $sql .= " AND t.data_fim <= ?";
+            $params[] = $dataFimTreino;
+        }
+
+        $stmt = $this->banco->prepare($sql);
+        $stmt->execute($params);
+        $treinos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        echo json_encode($treinos);
+    }
 }

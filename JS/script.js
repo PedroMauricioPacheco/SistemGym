@@ -125,7 +125,8 @@ function iniciarEventos() {
     document.getElementById('formCadastroAluno')?.addEventListener('submit', aoEnviarCadastroAluno);
     document.getElementById('formBuscarAlunos')?.addEventListener('submit', aoBuscarAlunos);
     document.getElementById('formEditarAluno')?.addEventListener('submit', aoEnviarEdicaoAluno);
-    spanUsuarioRepetido();
+    document.getElementById('formCadastroTreino')?.addEventListener('submit', aoEnviarCadastroTreino);
+    document.getElementById('formBuscarTreinos')?.addEventListener('submit', aoBuscarTreinos);
 }
 
 async function aoBuscarAlunos(e) {
@@ -210,9 +211,43 @@ function preencherTabela(alunos) {
             <i class="fa-solid fa-pen"></i>
           </button>
         </td>
+      <td>
+          <button
+            type="button"
+            onclick="apagarAluno('${aluno.id_aluno}')"
+            title="Apagar aluno"
+            style="background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: red;"
+          >
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
       </tr>
     `;
   });
+}
+async function apagarAluno(id) {
+    if (confirm('Tem certeza que deseja apagar este aluno? Os treinos associados a ele também serão apagados.')) {
+        const respostaFetch = await fetch('../Controllers/ControllerJson.php?action=apagarAluno', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `data=${encodeURIComponent(JSON.stringify({ id_aluno: id }))}`
+        });
+
+        const resposta = await respostaFetch.json();
+        if (resposta.success) {
+            alert('Aluno apagado com sucesso!');
+            const alunos = await buscarAlunos({
+                nomeAluno: '',
+                cpfAluno: '',
+                contatoAluno: '',
+                dataNascimentoAluno: ''
+            });
+            preencherTabela(alunos);
+        } else {
+            alert('Erro ao apagar aluno.');
+        }
+    }
+    
 }
 async function buscarAlunoPorId(id) {
     const resposta = await fetch('../Controllers/ControllerJson.php?action=popularCampoEditarAluno', {
@@ -264,6 +299,80 @@ async function aoEnviarCadastroAluno(event) {
         document.getElementById('msgErroCadastroAluno').textContent = 'Aluno já cadastrado';
     }
 }
+// Treinos
+async function coletarDadosCadastroTreino(){
+    return dados={
+        formCadastroTreino: document.getElementById('formCadastroTreino').value,
+        nomeAlunoTreinoCadastro: document.getElementById('nomeAlunoTreinoCadastro').value,
+        nomeTreinoCadastro: document.getElementById('nomeTreinoCadastro').value,
+        descricaoTreinoCadastro: document.getElementById('descricaoTreinoCadastro').value,
+        dataInicioTreinoCadastro: document.getElementById('dataInicioTreinoCadastro').value,
+        dataFimTreinoCadastro: document.getElementById('dataFimTreinoCadastro').value
+    }
+}
+async function CadastroTreino(dados) {
+    const respostaFetch = await fetch('../Controllers/ControllerJson.php?action=cadastrarTreino', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `data=${encodeURIComponent(JSON.stringify(dados))}`
+    });
 
+    return await respostaFetch.json();
+}
+async function aoEnviarCadastroTreino(event) {
+    event.preventDefault();
+    const dados = await coletarDadosCadastroTreino();
+    const resposta = await CadastroTreino(dados);
+    
+    if (resposta.success) {
+        document.getElementById('msgCadastroTreino').textContent = 'Treino cadastrado com sucesso!';
+        document.getElementById('msgCadastroTreino').style.color = 'green';
+        document.getElementById('formCadastroTreino').reset();
+    } else if(resposta.error === 'Aluno não encontrado') {
+        document.getElementById('msgCadastroTreino').textContent = 'Aluno não encontrado. Verifique o nome.';
+        document.getElementById('msgCadastroTreino').style.color = 'red';
+    }
+    else {
+        document.getElementById('msgCadastroTreino').textContent = 'Erro ao cadastrar treino. Verifique os dados.';
+        document.getElementById('msgCadastroTreino').style.color = 'red';
+    }
+}
+function coletarDadosFormularioTreinos(){
+    return {
+        nomeAlunoTreino: document.getElementById('nomeAlunoTreinoBusca').value,
+        dataInicioTreino: document.getElementById('dataInicioTreinoBusca').value,
+    };
+}
+async function buscarTreinos(dados){
+    const respostaFetch = await fetch('../Controllers/ControllerJson.php?action=buscarTreinos', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `data=${encodeURIComponent(JSON.stringify(dados))}`
+  });
+
+  return await respostaFetch.json();
+}
+async function aoBuscarTreinos(e) {
+    e.preventDefault();
+    const dados = coletarDadosFormularioTreinos();
+    const treinos = await buscarTreinos(dados);
+    preencherTabelaTreinos(treinos);
+}
+function preencherTabelaTreinos(treinos) {
+    const tbody = document.querySelector('#tabelaTreinos tbody');
+    tbody.innerHTML = '';
+    treinos.forEach((treino, index) => {
+        tbody.innerHTML += `
+            <tr>
+                <th scope="row">${index + 1}</th>
+                <td>${treino.nomeAlunoTreino}</td>
+                <td>${treino.nomeTreino}</td>
+                <td>${treino.descricao_treino}</td>
+                <td>${treino.dataInicioTreino || ''}</td>
+                <td>${treino.dataFimTreino || ''}</td>
+            </tr>
+        `;
+    });
+}
 
 window.addEventListener("DOMContentLoaded", iniciarEventos)
