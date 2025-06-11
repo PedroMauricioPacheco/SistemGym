@@ -1,0 +1,2 @@
+*.hh linguist-language=PHP
+vendor/** linguist-vendored

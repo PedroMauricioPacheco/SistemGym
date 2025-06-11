@@ -15,7 +15,10 @@ CREATE TABLE Treinos
 (
 	id INT auto_increment PRIMARY KEY,
     id_aluno INT,
+    nome_treino VARCHAR(25),
+    descricao VARCHAR(100),
     data_inicio DATE,
+    data_fim DATE,
     dia_semana VARCHAR (20),
     exercicio VARCHAR (40),
     series INT,
